@@ -1,0 +1,93 @@
+* Voyager Data Mangler
+
+  This is a set of FORTRAN 77 programs that do various things to data from the
+  Voyager 1 probe.
+  
+  It's really just an excuse for me to play around in FORTRAN, since I don't
+  have much call to do so these days.
+
+  What?  FORTRAN's fun.  It's like the polar opposite of Scheme.
+
+** Programs
+
+*** Voyager Magnetic Field Data
+
+    Both of the Voyager probes had sensors to detect the local magnetic field.
+    The probes would send back the average every hour.
+
+    Of course, that implies someone is listening.  There's a lot of gaps in the
+    data where (I assume) the Deep Space Network was pointed elsewhere.
+
+    These programs examine this data.
+
+    - fileinfo
+
+      fileinfo reads the data file and reports the following characteristics:
+      - Number of lines in the file
+      - Number of filler lines (lines with all data set to 0)
+      - Number of data lines
+      - Number of missing data lines (hours where we don't have any data)
+      - Largest gap (in hours) between two data lines
+      - Size of the data, not counting filler lines, assuming we had the full
+	set of data available.
+
+    - valdist
+
+      valdist reads the data file and verifies that the distance given in the
+      file matches the coordinate data given in the file.
+
+      I wrote this because I wasn't sure how accurate it was.  Turns out, it's
+      pretty accurate.  The only places where my calculations differ from the
+      given values could be attributed to different floating point systems.
+
+** Building
+
+   You must have gfortran installed.  Other FORTRAN compilers would probably
+   work fine, but I haven't tested any.  You also need a POSIX-ish make.  I've
+   tested with GNU Make, but I don't use any GNU extensions so any old UNIX
+   make should work.
+
+   Change to the directory you've downloaded the files to and execute:
+
+   #+BEGIN_SRC sh
+
+make
+   
+   #+END_SRC
+
+** Running
+
+   The path to the data file is hardcoded, so each of the programs expect the
+   path to the data file to be "data/VY1MAG_1H.ASC".  So as long as you are in
+   the directory where the executables can be found, simply run with as such:
+
+   #+BEGIN_SRC sh
+
+./fileinfo
+   
+   #+END_SRC
+
+** To Do
+
+   I'll expand on these when I have the time and inclination.  I'm not trying
+   to do any real science here, but having a bunch of data like this is handy
+   for trying out different algorithms and statistical formulas.
+   
+** License
+   
+   This is the ISC license.
+   
+   Copyright (c) 2018 Jeff Spaulding <sarnet@gmail.com>
+   
+   Permission to use, copy, modify, and distribute this software for any
+   purpose with or without fee is hereby granted, provided that the above
+   copyright notice and this permission notice appear in all copies.
+   
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+   WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+   ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+   
